@@ -1,0 +1,84 @@
+version: "3.8"
+services:
+  # Redis
+  redis:
+    image: "redis:6.2.6-alpine"
+    container_name: photovoltaic2-redis
+    ports:
+      - "6380:6379"
+    command: redis-server --save 60 1 --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+
+  # InfluxDB
+  influxdb:
+    image: influxdb:2.1.1-alpine
+    container_name: photovoltaic2-influxdb
+    restart: always
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    environment:
+      - INFLUXDB_REPORTING_DISABLED=true
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USER}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_TOKEN}
+
+  # Telegraf
+  telegraf:
+    image: photovoltaic/telegraf:${VERSION}
+    container_name: photovoltaic2-telegraf
+    build: .
+    restart: always
+    volumes:
+      - ./telegraf/src:/opt/telegraf/src
+      - ./telegraf/etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    depends_on:
+      - redis
+      - influxdb
+    environment:
+      - INTERVAL=${AGENT_INTERVAL}
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
+      - INFLUXDB_BUCKET=${INFLUXDB_BUCKET}
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+      - REDIS_URL=${REDIS_URL}
+      - GIOS_MAX_REQUESTS=${GIOS_MAX_REQUESTS}
+      - GIOS_STATIONS_TTL=${GIOS_STATIONS_TTL}
+      - GIOS_SENSORS_TTL=${GIOS_SENSORS_TTL}
+      - GIOS_VALUES_TTL=${GIOS_VALUES_TTL}
+      - GIOS_FILTERS=${GIOS_FILTERS}
+      - OWM_TOKEN=${OWM_TOKEN}
+      - OWM_MAX_REQUESTS=${OWM_MAX_REQUESTS}
+      - OWM_TTL=${OWM_TTL}
+      - OWM_FORECAST=${OWM_FORECAST}
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:8.4.1
+    container_name: photovoltaic2-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - influxdb
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
+      - INFLUXDB_BUCKET=${INFLUXDB_BUCKET}
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+
+  odczyt:
+    build: ./odczyt/.
+    restart: always
+
+volumes:
+  redis_data:
+  influxdb_data:
+  grafana_data:

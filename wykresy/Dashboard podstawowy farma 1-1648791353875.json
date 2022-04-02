@@ -1,0 +1,1194 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 20,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"photovoltaic\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"moce\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"predykcja\")\r\n  |> filter(fn: (r) => r[\"id_farmy\"] == \"1\")\r\n  |> filter(fn: (r) => r[\"zrodlo\"] == \"sred\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Predykcja produkcji",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"photovoltaic\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"moce\" and r._field == \"wydajnosc\"\r\n  )\r\n  |> filter(fn: (r) => r[\"id_farmy\"] == \"1\")\r\n  |> group(columns: [\"zrodlo\"])\r\n  |> aggregateWindow(every: 1d, fn: sum)",
+          "refId": "A"
+        }
+      ],
+      "title": "wydajnosc dzienna ",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "w",
+                "u",
+                "a",
+                "b",
+                "c",
+                "t",
+                "d",
+                "e",
+                "f",
+                "g",
+                "h",
+                "j",
+                "i",
+                "k",
+                "l",
+                "m",
+                "n",
+                "s",
+                "o",
+                "p",
+                "q",
+                "r"
+              ],
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 18,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"photovoltaic\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"moce\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"produkcja\")\r\n  |> filter(fn: (r) => r[\"id_farmy\"] == \"1\")\r\n  |> filter(fn: (r) => r[\"zrodlo\"] == \"sred\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Produkcja",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 10,
+      "maxDataPoints": 1000,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"photovoltaic\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"moce\" and (r._field == \"moc_AC\" or r._field == \"moc_DC\")\r\n  )\r\n  |> filter(fn: (r) => r[\"id_farmy\"] == \"1\")\r\n  |> aggregateWindow(every: 1d, fn: sum)\r\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\r\n  |> map(fn: (r) => ({ r with _value: r.moc_AC / r.moc_DC* 100.0}))\r\n  |> drop(columns:[\"moc_AC\", \"moc_DC\"])",
+          "refId": "A"
+        }
+      ],
+      "title": "% mocy DC skonwertowanej na AC",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Moc skonwertowana [%]",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"a\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"b\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"d\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"g\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"c\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"e\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"f\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"h\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"k\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"j\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"i\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"l\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"n\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"p\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"s\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"w\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"u\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"r\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"q\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"o\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"m\"}",
+                "{id_farmy=\"1\", name=\"moce\", zrodlo=\"t\"}"
+              ],
+              "reducer": "mean"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"photovoltaic\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"moce\" and (r._field == \"moc_AC\")\r\n  )\r\n  |> filter(fn: (r) => r[\"id_farmy\"] == \"1\")",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "hide": false,
+          "query": "from(bucket: \"photovoltaic\")\r\n  |> range(start: v.timeRangeStart, stop:v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"moce\" and (r._field == \"moc_DC\")\r\n  )",
+          "refId": "B"
+        }
+      ],
+      "title": "Moc AC i DC",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "AC",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"a\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"b\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"d\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"c\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"e\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"f\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"h\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"g\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"i\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"j\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"l\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"k\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"m\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"n\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"p\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"o\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"q\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"r\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"t\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"s\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"u\"}",
+                "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"w\"}"
+              ],
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "DC",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"a\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"b\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"c\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"d\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"e\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"f\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"g\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"h\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"i\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"j\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"k\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"l\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"m\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"n\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"o\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"p\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"q\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"r\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"s\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"t\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"u\"}",
+                "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"w\"}"
+              ],
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": false,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"a\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"b\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"c\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"d\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"e\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"f\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"g\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"h\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"i\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"j\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"k\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"l\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"m\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"n\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"o\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"p\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"q\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"r\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"s\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"t\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"u\"}": true,
+              "moc_AC {id_farmy=\"1\", name=\"moce\", zrodlo=\"w\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"a\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"b\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"c\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"d\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"e\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"f\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"g\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"h\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"i\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"j\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"k\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"l\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"m\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"n\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"o\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"p\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"q\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"r\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"s\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"t\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"u\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"w\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"a\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"b\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"c\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"d\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"e\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"f\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"g\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"h\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"i\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"j\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"k\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"l\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"m\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"n\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"o\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"p\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"q\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"r\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"s\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"t\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"u\"}": true,
+              "moc_DC {id_farmy=\"1\", name=\"moce\", zrodlo=\"w\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"a\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"b\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"c\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"d\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"e\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"f\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"g\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"h\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"i\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"j\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"k\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"l\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"m\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"n\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"o\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"p\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"q\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"r\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"s\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"t\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"u\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"w\"}": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"photovoltaic\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"moce\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"wydajnosc\")\r\n  |> filter(fn: (r) => r[\"id_farmy\"] == \"1\")\r\n  |> group(columns: [\"zrodlo\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Wydajnosc ",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "a",
+                "b",
+                "c",
+                "d",
+                "e",
+                "f",
+                "g",
+                "h",
+                "i",
+                "j",
+                "k",
+                "l",
+                "m",
+                "n",
+                "o",
+                "p",
+                "q",
+                "r",
+                "s",
+                "t",
+                "u",
+                "w"
+              ],
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "temp_otoczenia {id_farmy=\"1\", zrodlo=\"1_pv\"}"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"photovoltaic\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"pogoda\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"temp_otoczenia\")\r\n  |> filter(fn: (r) => r[\"id_farmy\"] == \"1\")\r\n  |> filter(fn: (r) => r[\"zrodlo\"] == \"1_pv\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Temperatura otoczenia",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": false,
+              "moc_AC {name=\"moce\", zrodlo=\"a\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"b\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"c\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"d\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"e\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"f\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"g\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"h\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"i\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"j\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"k\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"l\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"m\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"n\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"o\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"p\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"q\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"r\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"s\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"t\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"u\"}": true,
+              "moc_AC {name=\"moce\", zrodlo=\"w\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"a\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"b\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"c\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"d\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"e\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"f\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"g\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"h\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"i\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"j\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"k\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"l\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"m\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"n\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"o\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"p\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"q\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"r\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"s\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"t\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"u\"}": true,
+              "moc_DC {name=\"moce\", zrodlo=\"w\"}": true,
+              "temp_modulu {name=\"pogoda\", zrodlo=\"a_inv\"}": true,
+              "temp_otoczenia {name=\"pogoda\", zrodlo=\"a_inv\"}": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 25
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"photovoltaic\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"pogoda\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"temp_modulu\")\r\n  |> filter(fn: (r) => r[\"id_farmy\"] == \"1\")\r\n  |> filter(fn: (r) => r[\"zrodlo\"] == \"1_pv\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Temperatura modulu",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "P5697886F9CA74929"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P5697886F9CA74929"
+          },
+          "query": "from(bucket: \"photovoltaic\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"pogoda\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"naslonecznienie\")\r\n  |> filter(fn: (r) => r[\"id_farmy\"] == \"1\")\r\n  |> filter(fn: (r) => r[\"zrodlo\"] == \"1_pv\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Nasłonecznienie",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 35,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "2021-05-14T22:00:00.000Z",
+    "to": "2021-06-01T21:59:59.000Z"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Dashboard podstawowy farma 1",
+  "uid": "8SrtwOy7z",
+  "version": 15,
+  "weekStart": ""
+}

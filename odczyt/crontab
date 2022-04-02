@@ -1,0 +1,5 @@
+#run python script every minutes
+*/5 * * * * /usr/local/bin/python /app/porownanie_mocy_godzinowe_f1.py > /proc/1/fd/1 2>/proc/1/fd/2
+*/5 * * * * /usr/local/bin/python /app/porownanie_mocy_godzinowe_f2.py > /proc/1/fd/1 2>/proc/1/fd/2
+*/10 * * * * /usr/local/bin/python /app/przewidywanie_mocy_f1.py > /proc/1/fd/1 2>/proc/1/fd/2
+*/10 * * * * /usr/local/bin/python /app/przewidywanie_mocy_f2.py > /proc/1/fd/1 2>/proc/1/fd/2
