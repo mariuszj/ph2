@@ -23,7 +23,8 @@ Open the .env file to get all credentials.
 
 ### Date feed
 
-Run files:|
+Run files:
+
 /next/zapis_do_bazy_moc_1
 /next/zapis_do_bazy_moc_2
 /next/zapis_do_bazy_pogoda_1
