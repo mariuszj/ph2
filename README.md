@@ -34,7 +34,10 @@ Run files:
 ### Dashboards
 
 In Grafana import files:
+
+```
 /wykresy/Analiza godzinowa farma 1-1648790784139
 /wykresy/Analiza godzinowa farma 2-1648791346433
 /wykresy/Dashboard podstawowy farma 1-1648791353875
 /wykresy/Dashboard podstawowy farma 2-1648791359823
+```
