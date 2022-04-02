@@ -25,11 +25,12 @@ Open the .env file to get all credentials.
 
 Run files:
 
+```
 /next/zapis_do_bazy_moc_1
 /next/zapis_do_bazy_moc_2
 /next/zapis_do_bazy_pogoda_1
 /netx/zapis_do_bazy_pogoda_2
-
+```
 ### Dashboards
 
 In Grafana import files:
